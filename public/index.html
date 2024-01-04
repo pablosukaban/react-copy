@@ -30,31 +30,55 @@
         ]
     }
 
-    const app = document.createElement('div')
-    app.className = ('app')
+    function App({state}) {
+        const app = document.createElement('div')
+        app.className = ('app')
+        app.append(Header())
+        app.append(Clock({time: state.time}))
+        app.append(Lots({lots: state.lots}))
 
-    const header = document.createElement('header')
-    const title = document.createElement('h1')
-    title.innerText = 'Title'
-    header.append(title)
+        return app
+    }
 
-    const image = document.createElement('img')
-    image.src = 'react.png'
-    image.alt = 'logo'
-    header.append(image)
+    function Header() {
+        const header = document.createElement('header')
+        const title = document.createElement('h1')
+        title.innerText = 'Title'
 
-    app.append(header)
+        header.append(title)
+        header.append(Logo())
 
-    const timer = document.createElement('div')
-    timer.className = 'timer'
-    timer.innerText = state.time.toLocaleTimeString()
+        return header
+    }
 
-    app.append(timer)
+    function Logo() {
+        const image = document.createElement('img')
+        image.src = 'react.png'
+        image.alt = 'logo'
 
-    const lots = document.createElement('div')
-    lots.className = 'lots'
-    
-    state.lots.forEach(lotItem => {
+        return image
+    }
+
+    function Clock({time}) {
+        const timer = document.createElement('div')
+        timer.className = 'timer'
+        timer.innerText = time.toLocaleTimeString()
+
+        return timer
+    }
+
+    function Lots({lots}) {
+        const list = document.createElement('div')
+        list.className = 'lots'
+
+        lots.forEach(lot => {
+            list.append(Lot({lot}))
+        })
+
+        return list
+    }
+
+    function Lot({lot}) {
         const node = document.createElement('section')
         node.className = 'lot'
 
@@ -62,24 +86,27 @@
         lotTitle.className = 'lot-title'
 
         const lotTitleName = document.createElement('span')
-        lotTitleName.innerText = lotItem.title
+        lotTitleName.innerText = lot.title
 
         const lotTitlePrice = document.createElement('span')
-        lotTitlePrice.innerText = lotItem.price
+        lotTitlePrice.innerText = lot.price
 
         lotTitle.append(lotTitleName, lotTitlePrice)
 
         const lotDescription = document.createElement('p')
-        lotDescription.innerText = lotItem.description
+        lotDescription.innerText = lot.description
 
         node.append(lotTitle, lotDescription)
-        lots.append(node)
-    })
 
-    app.append(lots)
+        return node
+    }
 
-    const root = document.getElementById('root')
-    root.append(app)
+    render(App({state}), document.getElementById('root'))
+
+    function render(newDom, mainDomRoot) {
+        mainDomRoot.append(newDom)
+    }
+
 </script>
 
 </body>
