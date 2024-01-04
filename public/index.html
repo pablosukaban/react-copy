@@ -9,28 +9,78 @@
     <title>Document</title>
 </head>
 <body>
-<div class="container">
-    <h1>Title</h1>
-    <img src="react.png" alt="logo" />
-    <header class="header">
-        Time: <span class="time">00:00:00</span>
-    </header>
-    <div class="lots">
-        <section class="lot">
-            <h2 class="lot-title">
-                <span>Apple</span>
-                <span class="price">16</span>
-            </h2>
-            <p>Apple description</p>
-        </section>
-        <section class="lot">
-            <h2 class="lot-title">
-                <span>Orange</span>
-                <span class="price">41</span>
-            </h2>
-            <p>Orange description</p>
-        </section>
-    </div>
-</div>
+<div id="root"></div>
+
+<script>
+    const state = {
+        time: new Date(),
+        lots: [
+            {
+                id: 1,
+                title: 'Apple',
+                price: 16,
+                description: 'Apple description'
+            },
+            {
+                id: 2,
+                title: 'Orange',
+                price: 41,
+                description: 'Orange description'
+            }
+        ]
+    }
+
+    const app = document.createElement('div')
+    app.className = ('app')
+
+    const header = document.createElement('header')
+    const title = document.createElement('h1')
+    title.innerText = 'Title'
+    header.append(title)
+
+    const image = document.createElement('img')
+    image.src = 'react.png'
+    image.alt = 'logo'
+    header.append(image)
+
+    app.append(header)
+
+    const timer = document.createElement('div')
+    timer.className = 'timer'
+    timer.innerText = state.time.toLocaleTimeString()
+
+    app.append(timer)
+
+    const lots = document.createElement('div')
+    lots.className = 'lots'
+    
+    state.lots.forEach(lotItem => {
+        const node = document.createElement('section')
+        node.className = 'lot'
+
+        const lotTitle = document.createElement('h2')
+        lotTitle.className = 'lot-title'
+
+        const lotTitleName = document.createElement('span')
+        lotTitleName.innerText = lotItem.title
+
+        const lotTitlePrice = document.createElement('span')
+        lotTitlePrice.innerText = lotItem.price
+
+        lotTitle.append(lotTitleName, lotTitlePrice)
+
+        const lotDescription = document.createElement('p')
+        lotDescription.innerText = lotItem.description
+
+        node.append(lotTitle, lotDescription)
+        lots.append(node)
+    })
+
+    app.append(lots)
+
+    const root = document.getElementById('root')
+    root.append(app)
+</script>
+
 </body>
 </html>
