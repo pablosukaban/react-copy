@@ -14,20 +14,21 @@
 <script>
     let state = {
         time: new Date(),
-        lots: [
-            {
-                id: 1,
-                title: 'Apple',
-                price: 16,
-                description: 'Apple description'
-            },
-            {
-                id: 2,
-                title: 'Orange',
-                price: 41,
-                description: 'Orange description'
-            }
-        ]
+        lots: null
+        // lots: [
+        //     {
+        //         id: 1,
+        //         title: 'Apple',
+        //         price: 16,
+        //         description: 'Apple description'
+        //     },
+        //     {
+        //         id: 2,
+        //         title: 'Orange',
+        //         price: 41,
+        //         description: 'Orange description'
+        //     }
+        // ]
     }
 
     // ===========================
@@ -83,6 +84,10 @@
     }
 
     function Lots({lots}) {
+        if (lots === null) {
+            return Loader()
+        }
+
         const list = document.createElement('div')
         list.className = 'lots'
 
@@ -114,6 +119,14 @@
         node.append(lotTitle, lotDescription)
 
         return node
+    }
+
+    function Loader() {
+        const loader = document.createElement('div')
+        loader.className = 'loader'
+        loader.innerText = 'Loading...'
+
+        return loader
     }
 
     // ===========================

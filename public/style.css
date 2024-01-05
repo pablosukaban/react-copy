@@ -47,6 +47,14 @@ h1 {
     text-align: center;
 }
 
+.loader {
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
 .lot {
     padding: 15px;
     border: 1px solid #ccc;
