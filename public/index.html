@@ -133,6 +133,7 @@
   function Lot({lot}) {
     const node = document.createElement('section')
     node.className = 'lot'
+    node.dataset.key = lot.id
 
     const lotTitle = document.createElement('h2')
     lotTitle.className = 'lot-title'
