@@ -1,69 +1,69 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    font-family: sans-serif;
+  font-family: sans-serif;
 }
 
 body {
-    margin: 0;
+  margin: 0;
 }
 
 .app {
-    max-width: 1170px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 15px;
-    padding-right: 15px;
+  max-width: 1170px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .timer {
-    text-align: center;
-    padding: 15px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
 
 .icon {
-    margin-left: 20px;
-    vertical-align: middle;
-    width: 32px;
-    height: 32px;
-    display: inline-block;
-    border-radius: 100%;
+  margin-left: 20px;
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  border-radius: 100%;
 }
 
 .icon.day {
-    background-color: yellow;
+  background-color: yellow;
 }
 
 .icon.night {
-    background-color: darkblue;
+  background-color: darkblue;
 }
 
 h1 {
-    text-align: center;
+  text-align: center;
 }
 
 .loader {
-    text-align: center;
-    padding: 15px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
 
 .lot {
-    padding: 15px;
-    border: 1px solid #ccc;
-    margin-bottom: 15px;
-    border-radius: 10px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  border-radius: 10px;
 }
 
 .lot-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
