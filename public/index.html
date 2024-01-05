@@ -172,6 +172,20 @@
         }
 
         renderView(state)
+
+        setInterval(() => {
+            const updatedLots = state.lots.map(lot => {
+                return {
+                    ...lot,
+                    price: Math.floor(Math.random() * 100)
+                }
+            })
+
+            state = {
+                ...state,
+                lots: updatedLots
+            }
+        }, 400)
     })
 
     // ===========================
