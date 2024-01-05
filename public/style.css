@@ -26,6 +26,23 @@ body {
     border-radius: 10px;
 }
 
+.icon {
+    margin-left: 20px;
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    border-radius: 100%;
+}
+
+.icon.day {
+    background-color: yellow;
+}
+
+.icon.night {
+    background-color: darkblue;
+}
+
 h1 {
     text-align: center;
 }
