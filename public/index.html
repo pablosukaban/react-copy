@@ -9,9 +9,18 @@
   <title>Document</title>
 </head>
 <body>
+<div id="test">
+  Hello <strong>World</strong>!
+</div>
+
 <div id="root"></div>
 
 <script>
+  const el = document.getElementById('test')
+
+  debugger
+
+  // ===========================
   const api = {
     get(url) {
       switch (url) {
@@ -212,9 +221,49 @@
 
   // ===========================
 
-  function render(newDom, mainDomRoot) {
-    mainDomRoot.innerHTML = ''
-    mainDomRoot.append(newDom)
+  function render(virtualDom, realDomRoot) {
+    const virtualDomRoot = document.createElement(realDomRoot.tagName)
+    virtualDomRoot.id = realDomRoot.id
+    virtualDomRoot.append(virtualDom)
+
+    sync(virtualDomRoot, realDomRoot)
+  }
+
+  function sync(virtualNode, realNode) {
+    if (virtualNode.id !== realNode.id) {
+      realNode.id = virtualNode.id
+    }
+
+    if (virtualNode.className !== realNode.className) {
+      realNode.className = virtualNode.className
+    }
+
+    if (virtualNode.attributes) {
+      Array.from(virtualNode.attributes).forEach((attr) => {
+        realNode[attr.name] = attr.value
+      })
+    }
+
+    if (virtualNode.nodeValue !== realNode.nodeValue) {
+      realNode.nodeValue = virtualNode.nodeValue
+    }
+
+    realNode.innerHTML = ''
+
+    const virtualDomChildren = virtualNode.childNodes
+
+    for (let i = 0; i < virtualDomChildren.length; i++) {
+      const innerVirtualNode = virtualDomChildren[i]
+
+      let newRealNode
+      if (innerVirtualNode.nodeType === Node.TEXT_NODE) {
+        newRealNode = document.createTextNode('')
+      } else {
+        newRealNode = document.createElement(innerVirtualNode.tagName)
+      }
+      sync(innerVirtualNode, newRealNode)
+      realNode.append(newRealNode)
+    }
   }
 
   // ===========================
