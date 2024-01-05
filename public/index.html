@@ -9,18 +9,10 @@
   <title>Document</title>
 </head>
 <body>
-<div id="test">
-  Hello <strong>World</strong>!
-</div>
 
 <div id="root"></div>
 
 <script>
-  const el = document.getElementById('test')
-
-  debugger
-
-  // ===========================
   const api = {
     get(url) {
       switch (url) {
@@ -248,22 +240,45 @@
       realNode.nodeValue = virtualNode.nodeValue
     }
 
-    realNode.innerHTML = ''
-
     const virtualDomChildren = virtualNode.childNodes
+    const realDomChildren = realNode.childNodes
 
-    for (let i = 0; i < virtualDomChildren.length; i++) {
+    for (let i = 0; i < virtualDomChildren.length || i < realDomChildren.length; i++) {
       const innerVirtualNode = virtualDomChildren[i]
+      const innerRealNode = realDomChildren[i]
 
-      let newRealNode
-      if (innerVirtualNode.nodeType === Node.TEXT_NODE) {
-        newRealNode = document.createTextNode('')
-      } else {
-        newRealNode = document.createElement(innerVirtualNode.tagName)
+      // Remove
+      if (innerVirtualNode === undefined && innerRealNode !== undefined) {
+        realNode.remove(innerRealNode)
       }
-      sync(innerVirtualNode, newRealNode)
-      realNode.append(newRealNode)
+
+      // Update
+      if (innerRealNode !== undefined && innerVirtualNode !== undefined && innerVirtualNode.tagName === innerRealNode.tagName) {
+        sync(innerVirtualNode, innerRealNode)
+      }
+
+      // Replace
+      if (innerRealNode !== undefined && innerVirtualNode !== undefined && innerVirtualNode.tagName !== innerRealNode.tagName) {
+        const newRealNode = createRealNodeByVirtual(innerVirtualNode)
+        sync(innerVirtualNode, newRealNode)
+        realNode.replaceChild(newRealNode, innerRealNode)
+      }
+
+      // Add
+      if (innerVirtualNode !== undefined && innerRealNode === undefined) {
+        const newRealNode = createRealNodeByVirtual(innerVirtualNode)
+        sync(innerVirtualNode, newRealNode)
+        realNode.append(newRealNode)
+      }
     }
+  }
+
+  function createRealNodeByVirtual(virtual) {
+    if (virtual.nodeType === Node.TEXT_NODE) {
+      return document.createTextNode('')
+    }
+
+    return document.createElement(virtual.tagName)
   }
 
   // ===========================
