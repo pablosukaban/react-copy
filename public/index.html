@@ -12,23 +12,40 @@
 <div id="root"></div>
 
 <script>
+    const api = {
+        get(url) {
+            switch (url) {
+                case '/lots': {
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            const demoLots = [
+                                {
+                                    id: 1,
+                                    title: 'Apple',
+                                    price: 16,
+                                    description: 'Apple description'
+                                },
+                                {
+                                    id: 2,
+                                    title: 'Orange',
+                                    price: 41,
+                                    description: 'Orange description'
+                                }
+                            ]
+
+                            resolve(demoLots)
+                        }, 1000)
+                    })
+                }
+            }
+        }
+    }
+
+    // ===========================
+
     let state = {
         time: new Date(),
         lots: null
-        // lots: [
-        //     {
-        //         id: 1,
-        //         title: 'Apple',
-        //         price: 16,
-        //         description: 'Apple description'
-        //     },
-        //     {
-        //         id: 2,
-        //         title: 'Orange',
-        //         price: 41,
-        //         description: 'Orange description'
-        //     }
-        // ]
     }
 
     // ===========================
@@ -147,6 +164,17 @@
 
         renderView(state)
     }, 1000)
+
+    api.get('/lots').then(lots => {
+        state = {
+            ...state,
+            lots
+        }
+
+        renderView(state)
+    })
+
+    // ===========================
 
     function render(newDom, mainDomRoot) {
         mainDomRoot.innerHTML = ''
