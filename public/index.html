@@ -41,6 +41,20 @@
         }
     }
 
+    const stream = {
+        subscribe(channel, callback) {
+            const match = /price-(\d+)/.exec(channel)
+            if (match) {
+                setInterval(() => {
+                    const id = parseInt(match[1])
+                    const price = Math.floor(Math.random() * 100)
+
+                    callback({id, price})
+                }, 2000)
+            }
+        }
+    }
+
     // ===========================
 
     let state = {
@@ -165,6 +179,24 @@
         renderView(state)
     }, 1000)
 
+    function onPrice(data) {
+        const updatedLots = state.lots.map(lot => {
+            if (lot.id !== data.id) return lot
+
+            return {
+                ...lot,
+                price: data.price
+            }
+        })
+
+        state = {
+            ...state,
+            lots: updatedLots
+        }
+
+        renderView(state)
+    }
+
     api.get('/lots').then(lots => {
         state = {
             ...state,
@@ -173,19 +205,9 @@
 
         renderView(state)
 
-        setInterval(() => {
-            const updatedLots = state.lots.map(lot => {
-                return {
-                    ...lot,
-                    price: Math.floor(Math.random() * 100)
-                }
-            })
-
-            state = {
-                ...state,
-                lots: updatedLots
-            }
-        }, 400)
+        state.lots.forEach(lot => {
+            stream.subscribe(`price-${lot.id}`, onPrice)
+        })
     })
 
     // ===========================
