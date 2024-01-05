@@ -30,6 +30,8 @@
         ]
     }
 
+    // ===========================
+
     function App({state}) {
         const app = document.createElement('div')
         app.className = ('app')
@@ -101,11 +103,19 @@
         return node
     }
 
+    // ===========================
+
     render(App({state}), document.getElementById('root'))
+
+    // ===========================
+
+
 
     function render(newDom, mainDomRoot) {
         mainDomRoot.append(newDom)
     }
+
+    // ===========================
 
 </script>
 
