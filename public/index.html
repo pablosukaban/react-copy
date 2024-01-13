@@ -15,6 +15,29 @@
   <body>
     <div id="root"></div>
 
+    <script type="text/own">
+      ##('OK!')
+    </script>
+
+    <script type="text/own">
+      ##('NO OK')
+    </script>
+
+    <script>
+      function convert(code) {
+        return code.split('##').join('console.log');
+      }
+
+      const scripts = document.querySelectorAll(`script[type='text/own']`);
+      scripts.forEach((script) => {
+        const js = convert(script.text);
+        const newScript = document.createElement('script');
+        newScript.text = js;
+
+        document.querySelector('body').appendChild(newScript);
+      });
+    </script>
+
     <script>
       const api = {
         get(url) {
