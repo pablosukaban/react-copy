@@ -63,10 +63,38 @@
 
       // ===========================
 
-      let state = {
+      const initialState = {
         time: new Date(),
         lots: null,
-      };
+      }
+
+      class Store {
+        constructor(initialState) {
+          this.state = initialState;
+          this.listeners = []
+        }
+
+        getState() {
+          return this.state;
+        }
+
+        changeState(diff) {
+          this.state = {
+            ...this.state,
+            ...(typeof diff === 'function' ? diff(this.state): diff)
+          }
+
+          this.listeners.forEach(listener => {
+            listener()
+          })
+        }
+
+        subscribe(listener) {
+          this.listeners.push(listener)
+        }
+      }
+
+      const store = new Store(initialState);
 
       // ===========================
 
@@ -150,46 +178,42 @@
         );
       }
 
-      renderView(state);
+      renderView(store.getState());
+
+      store.subscribe(() => {
+        renderView(store.getState())
+      })
 
       // ===========================
 
       setInterval(() => {
-        state = {
-          ...state,
-          time: new Date(),
-        };
+        store.changeState({
+          time: new Date()
+        })
 
-        renderView(state);
       }, 1000);
 
       function onPrice(data) {
-        const updatedLots = state.lots.map((lot) => {
-          if (lot.id !== data.id) return lot;
-
+        store.changeState(state => {
           return {
-            ...lot,
-            price: data.price,
-          };
-        });
+            lots: state.lots.map((lot) => {
+              if (lot.id !== data.id) return lot;
 
-        state = {
-          ...state,
-          lots: updatedLots,
-        };
-
-        renderView(state);
+              return {
+                ...lot,
+                price: data.price,
+              };
+            })
+          }
+        })
       }
 
       api.get('/lots').then((lots) => {
-        state = {
-          ...state,
-          lots,
-        };
+        store.changeState({
+          lots
+        })
 
-        renderView(state);
-
-        state.lots.forEach((lot) => {
+        lots.forEach((lot) => {
           stream.subscribe(`price-${lot.id}`, onPrice);
         });
       });
