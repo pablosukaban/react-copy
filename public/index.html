@@ -10,35 +10,14 @@
     <link href="style.css" rel="stylesheet" />
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- add babel standalone -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.js"></script>
     <title>What is React</title>
   </head>
   <body>
     <div id="root"></div>
 
-    <script type="text/own">
-      ##('OK!')
-    </script>
-
-    <script type="text/own">
-      ##('NO OK')
-    </script>
-
-    <script>
-      function convert(code) {
-        return code.split('##').join('console.log');
-      }
-
-      const scripts = document.querySelectorAll(`script[type='text/own']`);
-      scripts.forEach((script) => {
-        const js = convert(script.text);
-        const newScript = document.createElement('script');
-        newScript.text = js;
-
-        document.querySelector('body').appendChild(newScript);
-      });
-    </script>
-
-    <script>
+    <script type="text/jsx">
       const api = {
         get(url) {
           switch (url) {
@@ -92,81 +71,81 @@
       // ===========================
 
       function App({ state }) {
-        return React.createElement('div', { className: 'app' }, [
-          React.createElement(Header, { key: 'header' }),
-          React.createElement(Clock, { time: state.time, key: 'clock' }),
-          React.createElement(Lots, { lots: state.lots, key: 'lots' }),
-        ]);
+        return (
+          <div className="app">
+            <Header />
+            <Clock time={state.time} />
+            <Lots lots={state.lots} />
+          </div>
+        )
       }
 
       function Header() {
-        return React.createElement(
-          'header',
-          {
-            className: 'header',
-          },
-          React.createElement(Logo)
-        );
+        return (
+          <header className="header">
+            <Logo />
+          </header>
+        )
       }
 
       function Logo() {
-        return React.createElement('img', { src: 'react.png', alt: 'logo' });
+        return <img src="react.png" alt="logo" />
       }
 
       function Clock({ time }) {
         const isDay = time.getHours() > 7 && time.getHours() < 21;
 
-        return React.createElement(
-          'div',
-          { className: 'timer' },
-          React.createElement(
-            'span',
-            { className: 'value' },
-            time.toLocaleTimeString()
-          ),
-          React.createElement('span', {
-            className: `icon ${isDay ? 'day' : 'night'}`,
-          })
-        );
+        return (
+          <div className="timer">
+            <span className="value">{time.toLocaleTimeString()}</span>
+            <span className={`icon ${isDay ? 'day' : 'night'}`}></span>
+          </div>
+        )
+
       }
 
       function Lots({ lots }) {
         if (lots === null) {
-          return React.createElement(Loader);
+          return <Loader />;
         }
 
-        return React.createElement(
-          'div',
-          { className: 'lots' },
-          lots.map((lot) => React.createElement(Lot, { lot, key: lot.id }))
-        );
+
+        return (
+          <div className="lots">
+            {lots.map((lot) => (
+              <Lot key={lot.id} lot={lot} />
+            ))}
+          </div>
+        )
       }
 
       function Lot({ lot }) {
-        return React.createElement(
-          'section',
-          { className: 'lot' },
-          React.createElement('h2', { className: 'lot-title' }, [
-            React.createElement('span', { key: 'title' }, lot.title),
-            React.createElement('span', { key: 'price' }, lot.price),
-          ]),
-          React.createElement('p', { key: 'description' }, lot.description)
-        );
+
+        return (
+          <div className="lot">
+            <h2 className="lot-title">
+              <span key="title">{lot.title}</span>
+              <span key="price">{lot.price}</span>
+            </h2>
+            <p key="description">{lot.description}</p>
+          </div>
+        )
+
       }
 
       function Loader() {
-        return React.createElement(
-          'div',
-          { className: 'loader' },
-          'Loading...'
-        );
+        return (
+          <div className="loader">
+            Loading...
+          </div>
+        )
       }
 
       // ===========================
 
       function renderView(state) {
         ReactDOM.render(
-          React.createElement(App, { state }),
+          <App state={state} />,
           document.getElementById('root')
         );
       }
